@@ -1,7 +1,7 @@
 // Load Chain:
 window.onload = () => {
     getAllDogs().then(d => d.forEach(dog => displayDog(dog)))
-    document.getElementById('good-dog-filter').onclick = e => clickDogFilter(e)
+    document.getElementById('good-dog-filter').onclick = e => clickDogFilter(e.target)
 }
 
 
@@ -16,23 +16,9 @@ const updateDog = dog => fetch(`http://localhost:3000/pups/${dog.id}`, {
 
 
 // Events:
-const clickDogBarName = id => getDog(id).then(d => displayDogInfo(d))
-const clickGoodDog = dog => {
-    dog.isGoodDog = !dog.isGoodDog
-    updateDog(dog).then(d => {
-        displayDogInfo(d)
-        if (document.getElementById('good-dog-filter').innerText.split(': ')[1] == "ON") filterDogs()
-    })
-}
-const clickDogFilter = e => {
-    let val = e.target.innerText.split(': ')
-    if (val[1] == "OFF") {
-        e.target.innerText = val[0] + ": ON"
-    } else {
-        e.target.innerText = val[0] + ": OFF"
-    }
-    filterDogs() 
-}
+const clickDogBarName = id => getDog(id).then(dog => displayDogInfo(dog))
+const clickGoodDog = dog => toggleGoodDog(dog)
+const clickDogFilter = button => toggleDogFilter(button)
 
 
 // Helpers:
@@ -63,12 +49,27 @@ const displayDogInfo = dog => {
     document.getElementById('dog-info').replaceWith(div)
     div.id = "dog-info"
 }
+const toggleGoodDog = dog => {
+    updateDog({id: dog.id, isGoodDog: !dog.isGoodDog}).then(dog => {
+        displayDogInfo(dog)
+        if (document.getElementById('good-dog-filter').innerText.split(': ')[1] == "ON") filterDogs()
+    })
+}
+const toggleDogFilter = button => {
+    let val = button.innerText.split(': ')
+    if (val[1] == "OFF") {
+        button.innerText = val[0] + ": ON"
+    } else {
+        button.innerText = val[0] + ": OFF"
+    }
+    filterDogs() 
+}
 const filterDogs = () => {
     let button = document.getElementById('good-dog-filter')
     document.querySelectorAll('#dog-bar span').forEach(span => span.style.display = "flex")
     if (button.innerText.split(': ')[1] == "ON") {
-        getAllDogs().then(d => {
-            d.forEach(dog => {if (!dog.isGoodDog) document.getElementById(`bar-${dog.id}`).style.display = "none"})
-        })
+        getAllDogs().then(dogs => dogs.forEach(dog => {
+            if (!dog.isGoodDog) document.getElementById(`bar-${dog.id}`).style.display = "none"
+        }))
     }
 }
