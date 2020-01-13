@@ -25,7 +25,7 @@ const addPup = dog => {
 }
 
 const dogInfo = (dog, e) => {
-  let summary = document.getElementById('dog-summary-container')
+  let summary = document.getElementById('dog-info')
 
   while (summary.firstChild) {
     summary.removeChild(summary.firstChild)
