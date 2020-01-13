@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     getDogs() 
 })
 
+// get all the dogs from server
 const getDogs = () => {
     fetch("http://localhost:3000/pups")
     .then(res => res.json())
@@ -9,12 +10,14 @@ const getDogs = () => {
     .then(json => getEachPup(json))
 }
 
+// iterate through the array of pups from server
 const getEachPup = (pupArray) => {
     pupArray.forEach(pup => {
       spanPup(pup)  
     })
 }
 
+// create the "card" for every pup
 const spanPup = (pup) => {
     const dogBar = document.querySelector("#dog-bar")
     let span = document.createElement("span") 
@@ -29,6 +32,7 @@ const spanPup = (pup) => {
     dogBar.appendChild(span) 
 }
 
+// shows a specific dog once their span is clicked
 const showPup = (pup) => {
     const dogInfo = document.getElementById("dog-info") // check this in console 
     let img = document.createElement("img")
@@ -52,6 +56,7 @@ const showPup = (pup) => {
     
 }
 
+// edit isGoodDog for every pup
 const patchPup = (pup) => {
     let dogStatus = pup.isGoodDog
     dogStatus = !dogStatus // could also do if statement 
@@ -65,6 +70,7 @@ const patchPup = (pup) => {
     }).then(res => res.json())
     .then(json => showPup(json))
 }
+
 
 
 // old code 
