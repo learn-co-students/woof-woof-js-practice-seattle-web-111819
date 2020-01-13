@@ -25,6 +25,12 @@ const addPup = dog => {
 }
 
 const dogInfo = (dog, e) => {
+  let summary = document.getElementById('dog-summary-container')
+
+  while (summary.firstChild) {
+    summary.removeChild(summary.firstChild)
+  }
+
   let img = document.createElement('img')
   img.src = dog.image
 
@@ -39,12 +45,9 @@ const dogInfo = (dog, e) => {
      } else {
       button.innerText = "Bad Dog!"
      }
-  button.addEventListener("click", e => {
-    e.preventDefault()
-    toggleDog(dog, e)
+  button.addEventListener("click", () => {
+    toggleDog(dog)
   })
-
-  let summary = document.getElementById('dog-summary-container')
 
   summary.appendChild(img)
   summary.appendChild(h2)
@@ -52,7 +55,7 @@ const dogInfo = (dog, e) => {
 } 
 
 
-const toggleDog = (dog, e) => {
+const toggleDog = (dog) => {
   let dogStatus = dog.isGoodDog
   dogStatus = !dogStatus
   // console.log(dog.isGoodDog)
@@ -68,12 +71,5 @@ const toggleDog = (dog, e) => {
     })
   })
   .then(res => res.json())
-  .then(json => dogInfo(dog))
+  .then(dog => dogInfo(dog))
 } 
-
-//update database
-//patch
-
-const updateDog = dog => {
-
-}

@@ -48,6 +48,11 @@
   max-height: 25vw;
 }
 
+#dog-summary-container img {
+  max-width: 75vw;
+  max-height: 25vw;
+}
+
 body {
   margin: 0;
 }
